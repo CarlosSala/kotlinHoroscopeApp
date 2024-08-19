@@ -1,6 +1,7 @@
 package com.example.horoscopeapp.ui.detail
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -41,8 +42,14 @@ class HoroscopeDetailActivity : AppCompatActivity() {
 
         horoscopeDetailViewModel.getHoroscope(args.type)
 
-        initUI()
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                // close the current activity and return to the previous activity
+                finish()
+            }
+        })
 
+        initUI()
     }
 
     private fun initUI() {
@@ -51,12 +58,13 @@ class HoroscopeDetailActivity : AppCompatActivity() {
     }
 
     private fun initListener() {
-        binding.ivBack.setOnClickListener { onBackPressed() }
+        binding.ivBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun initUIState() {
 
-        // get access to viewModel with state flow
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 horoscopeDetailViewModel.state.collect {
@@ -65,7 +73,6 @@ class HoroscopeDetailActivity : AppCompatActivity() {
                         is HoroscopeDetailState.Error -> errorState()
                         is HoroscopeDetailState.Loading -> loadingState()
                         is HoroscopeDetailState.Success -> successState(it)
-                        else -> {}
                     }
                 }
             }

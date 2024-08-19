@@ -32,9 +32,22 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HoroscopeFragment : Fragment() {
 
-    private val horoscopeViewModel by viewModels<HoroscopeViewModel>()
+    private val horoscopeViewModel: HoroscopeViewModel by viewModels()
+
+    private var _binding: FragmentHoroscopeBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var horoscopeAdapter: HoroscopeAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = FragmentHoroscopeBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,6 +58,19 @@ class HoroscopeFragment : Fragment() {
     private fun initUI() {
         initUIState()
         initRV()
+    }
+
+    private fun initUIState() {
+
+        // coroutine special for fragments
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                horoscopeViewModel.horoscope.collect {
+                    // change in horoscope
+                    horoscopeAdapter.updateList(it)
+                }
+            }
+        }
     }
 
     private fun initRV() {
@@ -67,52 +93,18 @@ class HoroscopeFragment : Fragment() {
             }
 
             findNavController().navigate(
-
                 HoroscopeFragmentDirections.actionHoroscopeFragmentToHoroscopeDetailActivity(type)
             )
-            /*
-                        Toast.makeText(context, getString(it.name), Toast.LENGTH_LONG).show()
-            */
         })
 
         binding.rvFragmentHoroscope.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = horoscopeAdapter
         }
-
-        /*binding.rvFragmentHoroscope.layoutManager = LinearLayoutManager(context)
-        binding.rvFragmentHoroscope.adapter = horoscopeAdapter*/
     }
 
-    private fun initUIState() {
-
-        // coroutine special for fragments
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                horoscopeViewModel.horoscope.collect {
-
-                    // change in horoscope
-
-                    horoscopeAdapter.updateList(it)
-
-                }
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
-
-    private var _binding: FragmentHoroscopeBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        // Inflate the layout for this fragment
-        _binding = FragmentHoroscopeBinding.inflate(layoutInflater, container, false)
-        return binding.root
-
-    }
-
-
 }

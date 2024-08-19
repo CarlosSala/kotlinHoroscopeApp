@@ -31,6 +31,16 @@ class LuckFragment : Fragment() {
     @Inject
     lateinit var randomCardProvider: RandomCardProvider
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = FragmentLuckBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -68,23 +78,17 @@ class LuckFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
 
-        // binding.ivRouletteLuckFragment.setOnClickListener { spinRoulette() }
         binding.ivRouletteLuckFragment.setOnTouchListener(
             object : OnSwipeTouchListener(requireContext()) {
 
-                override fun onSwipeLeft() {
-                    spinRoulette()
-                }
+                override fun onSwipeLeft() = spinRoulette()
 
-                override fun onSwipeRight() {
-                    spinRoulette()
-                }
+                override fun onSwipeRight() = spinRoulette()
             })
     }
 
 
     private fun spinRoulette() {
-
 
         val random = Random()
         val degrees = random.nextInt(1440) + 360
@@ -103,8 +107,8 @@ class LuckFragment : Fragment() {
     private fun slideCard() {
 
         val slideUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_up)
-        slideUpAnimation.setAnimationListener(object : Animation.AnimationListener {
 
+        slideUpAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
                 binding.ivCardBackSmallLuckFragment.visibility = View.VISIBLE
             }
@@ -112,12 +116,10 @@ class LuckFragment : Fragment() {
             override fun onAnimationEnd(animation: Animation) {
                 growCard()
                 binding.ivCardBackSmallLuckFragment.visibility = View.VISIBLE
-
             }
 
             override fun onAnimationRepeat(animation: Animation) {
             }
-
         })
 
         binding.ivCardBackSmallLuckFragment.startAnimation(slideUpAnimation)
@@ -127,7 +129,6 @@ class LuckFragment : Fragment() {
         val growAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.grow)
 
         growAnimation.setAnimationListener(object : Animation.AnimationListener {
-
             override fun onAnimationStart(animation: Animation) {
                 binding.ivCardBackSmallLuckFragment.visibility = View.VISIBLE
             }
@@ -135,7 +136,6 @@ class LuckFragment : Fragment() {
             override fun onAnimationEnd(animation: Animation) {
                 binding.ivCardBackSmallLuckFragment.isVisible = false
                 showPremonitionView()
-
             }
 
             override fun onAnimationRepeat(animation: Animation) {
@@ -143,7 +143,6 @@ class LuckFragment : Fragment() {
         })
 
         binding.ivCardBackSmallLuckFragment.startAnimation(growAnimation)
-
     }
 
     private fun showPremonitionView() {
@@ -158,7 +157,6 @@ class LuckFragment : Fragment() {
         disappearAnimation.setAnimationListener(object : Animation.AnimationListener {
 
             override fun onAnimationStart(animation: Animation) {
-
             }
 
             override fun onAnimationEnd(animation: Animation) {
@@ -168,24 +166,9 @@ class LuckFragment : Fragment() {
 
             override fun onAnimationRepeat(animation: Animation) {
             }
-
         })
 
         binding.clPreviewLuckFragment.startAnimation(disappearAnimation)
         binding.clPredictionLuckFragment.startAnimation(appearAnimation)
-
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        // Inflate the layout for this fragment
-        _binding = FragmentLuckBinding.inflate(layoutInflater, container, false)
-
-        return binding.root
-    }
-
-
 }

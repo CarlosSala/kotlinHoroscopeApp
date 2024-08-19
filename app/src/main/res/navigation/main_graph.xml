@@ -14,16 +14,7 @@
             android:id="@+id/action_horoscopeFragment_to_horoscopeDetailActivity"
             app:destination="@id/horoscopeDetailActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/palmistryFragment"
-        android:name="com.example.horoscopeapp.ui.palmistry.PalmistryFragment"
-        android:label="fragment_palmistry"
-        tools:layout="@layout/fragment_palmistry" />
-    <fragment
-        android:id="@+id/luckFragment"
-        android:name="com.example.horoscopeapp.ui.luck.LuckFragment"
-        android:label="fragment_luck"
-        tools:layout="@layout/fragment_luck" />
+
     <activity
         android:id="@+id/horoscopeDetailActivity"
         android:name="com.example.horoscopeapp.ui.detail.HoroscopeDetailActivity"
@@ -34,5 +25,15 @@
             android:name="type"
             app:argType="com.example.horoscopeapp.domain.model.HoroscopeModel" />
     </activity>
+    <fragment
+        android:id="@+id/palmistryFragment"
+        android:name="com.example.horoscopeapp.ui.palmistry.PalmistryFragment"
+        android:label="fragment_palmistry"
+        tools:layout="@layout/fragment_palmistry" />
+    <fragment
+        android:id="@+id/luckFragment"
+        android:name="com.example.horoscopeapp.ui.luck.LuckFragment"
+        android:label="fragment_luck"
+        tools:layout="@layout/fragment_luck" />
 
 </navigation>

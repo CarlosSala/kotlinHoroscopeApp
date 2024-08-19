@@ -13,20 +13,19 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class HoroscopeDetailViewModel @Inject constructor(private val getPredictionUseCase: GetPredictionUseCase) :
-    ViewModel() {
-
+class HoroscopeDetailViewModel @Inject constructor(
+    private val getPredictionUseCase: GetPredictionUseCase
+) : ViewModel() {
 
     private var _state = MutableStateFlow<HoroscopeDetailState>(HoroscopeDetailState.Loading)
     val state: StateFlow<HoroscopeDetailState> = _state
 
-    lateinit var horoscope: HoroscopeModel
-
+    private lateinit var horoscopeModel: HoroscopeModel
 
     fun getHoroscope(sign: HoroscopeModel) {
-        viewModelScope.launch {
 
-            horoscope = sign
+        viewModelScope.launch {
+            horoscopeModel = sign
 
             // main thread
             _state.value = HoroscopeDetailState.Loading
@@ -37,13 +36,14 @@ class HoroscopeDetailViewModel @Inject constructor(private val getPredictionUseC
             }
             if (result != null) {
                 _state.value =
-                    HoroscopeDetailState.Success(result.horoscope, result.sign, horoscope)
+                    HoroscopeDetailState.Success(
+                        result.horoscope,
+                        result.sign,
+                        horoscopeModel
+                    )
             } else {
                 _state.value = HoroscopeDetailState.Error("error has occurred")
             }
         }
-
-        // main thread
     }
-
 }

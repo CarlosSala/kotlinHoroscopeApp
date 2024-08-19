@@ -7,7 +7,4 @@ import androidx.annotation.StringRes
 class LuckyModel(
     @DrawableRes val image: Int,
     @StringRes val text: Int
-) {
-
-
-}
+)

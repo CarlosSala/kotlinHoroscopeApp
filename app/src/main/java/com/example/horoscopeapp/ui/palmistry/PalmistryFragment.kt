@@ -41,6 +41,16 @@ class PalmistryFragment : Fragment() {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        // Inflate the layout for this fragment
+        _binding = FragmentPalmistryBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,6 +64,14 @@ class PalmistryFragment : Fragment() {
             // launch the permission request
             requestPermissionLauncher.launch(CAMERA_PERMISSION)
         }
+    }
+
+    private fun checkCameraPermission(): Boolean {
+
+        return PermissionChecker.checkSelfPermission(
+            requireContext(),
+            CAMERA_PERMISSION
+        ) == PermissionChecker.PERMISSION_GRANTED
     }
 
     private fun startCamera() {
@@ -72,7 +90,6 @@ class PalmistryFragment : Fragment() {
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             try {
-
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
                     this,
@@ -88,25 +105,6 @@ class PalmistryFragment : Fragment() {
             }
 
         }, ContextCompat.getMainExecutor(requireContext()))
-}
-
-private fun checkCameraPermission(): Boolean {
-
-    return PermissionChecker.checkSelfPermission(
-        requireContext(),
-        CAMERA_PERMISSION
-    ) == PermissionChecker.PERMISSION_GRANTED
-}
-
-override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
-): View {
-
-    // Inflate the layout for this fragment
-    _binding = FragmentPalmistryBinding.inflate(layoutInflater, container, false)
-    return binding.root
-}
-
+    }
 
 }

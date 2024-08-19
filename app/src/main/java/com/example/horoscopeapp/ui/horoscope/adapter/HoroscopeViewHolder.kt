@@ -14,30 +14,25 @@ class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         horoscopeInfo: HoroscopeInfo,
         onItemSelected: (HoroscopeInfo) -> Unit
     ) {
-
         val context = binding.tvTitle.context
 
         binding.ivHoroscope.setImageResource(horoscopeInfo.img)
         binding.tvTitle.text = context.getString(horoscopeInfo.name)
 
-        // it passes horoscope info belong to item selected
         binding.parent.setOnClickListener {
-
             startRotationAnimation(
                 binding.ivHoroscope,
-                newLambda = { onItemSelected(horoscopeInfo) })
-            // onItemSelected(horoscopeInfo) }
-
+                onItemSelected = { onItemSelected(horoscopeInfo) })
         }
     }
 
-    private fun startRotationAnimation(view: View, newLambda: () -> Unit) {
+    private fun startRotationAnimation(view: View, onItemSelected: () -> Unit) {
 
         view.animate().apply {
             duration = 500
             interpolator = LinearInterpolator()
             rotationBy(360f)
-            withEndAction { newLambda() }
+            withEndAction { onItemSelected() }
             start()
         }
     }

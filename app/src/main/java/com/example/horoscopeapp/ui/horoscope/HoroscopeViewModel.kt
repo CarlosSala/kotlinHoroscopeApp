@@ -9,20 +9,14 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HoroscopeViewModel @Inject constructor(horoscopeProvider: HoroscopeProvider) :
-    ViewModel() {
+class HoroscopeViewModel @Inject constructor(
+    horoscopeProvider: HoroscopeProvider
+) : ViewModel() {
 
-    // good practice, this is used since into class
     private var _horoscope = MutableStateFlow<List<HoroscopeInfo>>(emptyList())
-    // this will be used since out class
     val horoscope: StateFlow<List<HoroscopeInfo>> = _horoscope
 
     init {
-
         _horoscope.value = horoscopeProvider.getHoroscope()
-
-        /*        _horoscope.value = listOf(
-
-                    Aries, Taurus, Gemini )*/
     }
 }

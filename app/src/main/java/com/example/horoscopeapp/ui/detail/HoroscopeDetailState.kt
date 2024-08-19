@@ -8,8 +8,10 @@ sealed class HoroscopeDetailState {
 
     // when class require parameters is data class
     data class Error(val error: String) : HoroscopeDetailState()
-    data class Success(
-        val prediction: String, val sign: String, val horoscopeModel: HoroscopeModel
-    ) : HoroscopeDetailState()
 
+    data class Success(
+        val prediction: String,
+        val sign: String,
+        val horoscopeModel: HoroscopeModel
+    ) : HoroscopeDetailState()
 }
