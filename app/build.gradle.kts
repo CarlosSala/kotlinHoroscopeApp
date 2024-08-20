@@ -17,7 +17,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // this Runner is used with test without Hilt
+        // testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.horoscopeapp.CustomTestRunner"
     }
 
     buildTypes {
@@ -74,12 +76,26 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.extensions)
 
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
+
+    // UnitTesting
     testImplementation(libs.junit)
+    testImplementation(libs.kotlintest.runner.junit5)
+    testImplementation(libs.mockk)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // UiTesting
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.androidx.espresso.intents)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.androidx.fragment.testing)
+    kspAndroidTest(libs.hilt.android.compiler)
+
 }
